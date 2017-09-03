@@ -42,6 +42,7 @@ Instead of full content comparison, it can only check `Last-Modified` header val
 
 Cells on **"Status"**, **"Last modified"**, **"Response"**, **"Last checked"** and **"Hash"** columns are automatically filled by the utility.
 Once you run this utility, all cells on these column will be filled.
+Do not touch any cells on these columns.
 
 Tip
 ------------
@@ -52,5 +53,5 @@ Set an trigger to check an update automatically.
 3. Go to **Edit** -> **Current project's triggers**
 4. Push **Add a new trigger** link
 5. Fill `do_all` into the cell on "Run" column and set time-driven events as you like
-6. Notification email will be sent to your email address if there are some updates
+6. Notification email will be sent to your email address if there are updates
 
