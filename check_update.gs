@@ -13,7 +13,7 @@ function check_update() {
     Logger.log('>> Row %s : %s', i.toString(), uri);
 
     if (! /^https?:/.test(uri)) {
-      Logger.log('[SKIP] Not a valid URI');
+      Logger.log('Skip: Not a valid URI');
       continue;
     }
 
@@ -56,7 +56,7 @@ function check_update() {
     value[i][COL.LASTCHK] = new Date();
 
     if (!response) {
-      Logger.log('[ERROR] URI fetch failed');
+      Logger.log('Error: Empty response');
       value[i][COL.STATUS] = STATUS.ERROR;
       continue;
     }
@@ -81,14 +81,14 @@ function check_update() {
 
 
     if (value[i][COL.HEAD_ONLY] && lastmod) {
-      Logger.log('[INFO] Check by HTTP Header (Last-Modified)');
+      Logger.log('Check by HTTP Header (Last-Modified)');
       if (!prev[COL.LASTMOD] || (prev[COL.LASTMOD].getTime() !== lastmod.getTime())) {
         value[i][COL.STATUS] = STATUS.UP;
       }
       continue; // Skip check by content
     }
 
-    Logger.log('[INFO] Check by content');
+    Logger.log('Check by content');
     if (prev[COL.HASH] !== hash) {
       value[i][COL.STATUS] = STATUS.UP;
     }

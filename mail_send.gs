@@ -29,7 +29,7 @@ function mail_send() {
 
   var mailto = Session.getActiveUser().getEmail();
   MailApp.sendEmail(mailto, 'Notification: ' + SpreadsheetApp.getActiveSpreadsheet().getName(), body.trim());
-  Logger.log('Mail sent to %s', mailto);
+  Logger.log('Mail sent to: %s', mailto);
 
   Logger.log('Finish mail_send');
 };
