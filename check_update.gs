@@ -1,3 +1,5 @@
+var retry = 3;
+
 function check_update() {
   Logger.log('Start check_update...');
 
@@ -24,7 +26,32 @@ function check_update() {
     value[i][COL.HASH]     = '';
 
 
-    var response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
+    var response = null;
+    var code = '';
+    for (var j = 1;; j++) {
+      Logger.log('Fetching... (Try: %s)', j.toString());
+      response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
+
+      if (response) {
+        code = response.getResponseCode().toString();
+        Logger.log('Fetched with status code: %s', code);
+
+        if (code === '200') {
+          break;
+        }
+      }
+      else {
+        Logger.log('Fetch failed with empty response');
+      }
+
+      if (j >= retry) {
+        break;
+      }
+
+      Logger.log('Waiting for retry...', j.toString());
+      Utilities.sleep(3*1000);
+    }
+
 
     value[i][COL.LASTCHK] = new Date();
 
@@ -34,8 +61,7 @@ function check_update() {
       continue;
     }
 
-    var code = response.getResponseCode().toString();
-    Logger.log('[INFO] HTTP responce with code: %s', code);
+
     value[i][COL.RESPONSE] = code;
 
     if (code !== '200') {
