@@ -21,11 +21,13 @@ function check_update() {
     value[i][COL.STATUS]   = STATUS.NOCHG;
     value[i][COL.LASTMOD]  = '';
     value[i][COL.RESPONSE] = 'null';
-    value[i][COL.LASTCHK]  = new Date();
     value[i][COL.HASH]     = '';
 
 
     var response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
+
+    value[i][COL.LASTCHK] = new Date();
+
     if (!response) {
       Logger.log('[ERROR] URI fetch failed');
       value[i][COL.STATUS] = STATUS.ERROR;
