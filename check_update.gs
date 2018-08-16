@@ -98,5 +98,3 @@ function check_update() {
 
   Logger.log('Finish check_update');
 };
-
-

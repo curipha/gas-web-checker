@@ -33,4 +33,3 @@ function mail_send() {
 
   Logger.log('Finish mail_send');
 };
-
