@@ -9,7 +9,7 @@ function mail_send() {
   for (var i = 1; i < value.length; i++) {
     switch(value[i][COL.STATUS]) {
       case STATUS.UP:
-        updated += Utilities.formatString('* %s', value[i][COL.TITLE]) + (value[i][COL.LASTMOD] ? Utilities.formatDate(value[i][COL.LASTMOD], 'JST', ' (yyyy/MM/dd HH:mm:ss)') : '') + "\r\n";
+        updated += Utilities.formatString('* %s', value[i][COL.TITLE]) + (value[i][COL.LASTMOD] ? Utilities.formatDate(value[i][COL.LASTMOD], 'JST', ' (yyyy.M.d H:mm)') : '') + "\r\n";
         updated += value[i][COL.URI] + "\r\n\r\n";
         break;
       case STATUS.ERROR:
