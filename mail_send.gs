@@ -27,9 +27,11 @@ function mail_send() {
     body += "Error:\r\n" + errors;
   }
 
-  var mailto = Session.getActiveUser().getEmail();
-  MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s', SpreadsheetApp.getActiveSpreadsheet().getName()), body.trim());
-  Logger.log('Mail sent to: %s', mailto);
+  if (body.length > 0) {
+    var mailto = Session.getActiveUser().getEmail();
+    MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s', SpreadsheetApp.getActiveSpreadsheet().getName()), body.trim());
+    Logger.log('Mail sent to: %s', mailto);
+  }
 
   Logger.log('Finish mail_send');
 };
