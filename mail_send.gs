@@ -20,11 +20,12 @@ function mail_send() {
   }
 
 
-  var body = 'Updated: ';
-  body += (updated.length > 0) ? "\r\n" + updated : "n/a\r\n\r\n";
-
+  var body = '';
+  if (updated.length > 0) {
+    body += "<< Updated >>\r\n\r\n" + updated;
+  }
   if (errors.length > 0) {
-    body += "Error:\r\n" + errors;
+    body += "<< Error >>\r\n\r\n" + errors;
   }
 
   if (body.length > 0) {
