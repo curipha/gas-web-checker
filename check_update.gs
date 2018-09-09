@@ -47,7 +47,7 @@ function check_update() {
         break;
       }
 
-      Logger.log('Waiting for retry...', j.toString());
+      Logger.log('Waiting for retry...');
       Utilities.sleep(3*1000);
     }
 
