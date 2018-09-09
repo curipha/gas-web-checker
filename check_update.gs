@@ -25,7 +25,6 @@ function check_update() {
     value[i][COL.RESPONSE] = 'null';
     value[i][COL.HASH]     = '';
 
-
     var response = null;
     var code = '';
     for (var j = 1;; j++) {
