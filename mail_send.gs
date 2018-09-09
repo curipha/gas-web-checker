@@ -30,8 +30,8 @@ function mail_send() {
 
   if (body.length > 0) {
     var mailto = Session.getActiveUser().getEmail();
+    Logger.log('Sending mail to: %s', mailto);
     MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s', SpreadsheetApp.getActiveSpreadsheet().getName()), body.trim());
-    Logger.log('Mail sent to: %s', mailto);
   }
 
   Logger.log('Finish mail_send');
