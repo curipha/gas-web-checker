@@ -6,4 +6,3 @@ function onOpen() {
     .addItem('Send mail now', 'mail_send')
     .addToUi();
 };
-
