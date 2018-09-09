@@ -9,11 +9,11 @@ function mail_send() {
   for (var i = 1; i < value.length; i++) {
     switch(value[i][COL.STATUS]) {
       case STATUS.UP:
-        updated += '* ' + value[i][COL.TITLE] + (value[i][COL.LASTMOD] ? ' (' + Utilities.formatDate(value[i][COL.LASTMOD], 'JST', 'yyyy/MM/dd HH:mm:ss') + ')' : '') + "\r\n";
+        updated += Utilities.formatString('* %s', value[i][COL.TITLE]) + (value[i][COL.LASTMOD] ? Utilities.formatDate(value[i][COL.LASTMOD], 'JST', ' (yyyy/MM/dd HH:mm:ss)') : '') + "\r\n";
         updated += value[i][COL.URI] + "\r\n\r\n";
         break;
       case STATUS.ERROR:
-        errors  += '* [' + value[i][COL.RESPONSE] + '] ' + value[i][COL.TITLE] + "\r\n";
+        errors  += Utilities.formatString('* [%s] %s', value[i][COL.RESPONSE], value[i][COL.TITLE]) + "\r\n";
         errors  += value[i][COL.URI] + "\r\n\r\n";
         break;
     }
@@ -28,7 +28,7 @@ function mail_send() {
   }
 
   var mailto = Session.getActiveUser().getEmail();
-  MailApp.sendEmail(mailto, 'Notification: ' + SpreadsheetApp.getActiveSpreadsheet().getName(), body.trim());
+  MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s', SpreadsheetApp.getActiveSpreadsheet().getName()), body.trim());
   Logger.log('Mail sent to: %s', mailto);
 
   Logger.log('Finish mail_send');
