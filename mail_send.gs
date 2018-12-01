@@ -1,5 +1,5 @@
 function mail_send() {
-  Logger.log('Start mail_send...');
+  console.log('Start mail_send()');
 
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var value = sheet.getDataRange().getValues();
@@ -30,9 +30,9 @@ function mail_send() {
 
   if (body.length > 0) {
     var mailto = Session.getActiveUser().getEmail();
-    Logger.log('Sending mail to: %s', mailto);
+    console.log('Sending mail to: %s', mailto);
     MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s (%s)', SpreadsheetApp.getActiveSpreadsheet().getName(), Utilities.formatDate(new Date(), 'JST', 'yyyy.M.d')), body.trim());
   }
 
-  Logger.log('Finish mail_send');
+  console.log('Finish mail_send()');
 };

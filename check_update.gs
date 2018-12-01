@@ -1,7 +1,7 @@
 var retry = 3;
 
 function check_update() {
-  Logger.log('Start check_update...');
+  console.log('Start check_update()');
 
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var range = sheet.getDataRange();
@@ -10,10 +10,10 @@ function check_update() {
   for (var i = 1; i < value.length; i++) {
     var uri = value[i][COL.URICHK] || value[i][COL.URI];
 
-    Logger.log('>> Row %s : %s', i.toString(), uri);
+    console.log('>> Row %s : %s', i.toString(), uri);
 
     if (! /^https?:/.test(uri)) {
-      Logger.log('Skip: Not a valid URI');
+      console.warn('Not a valid URI: %s', uri);
       continue;
     }
 
@@ -28,26 +28,26 @@ function check_update() {
     var response = null;
     var code = '';
     for (var j = 1;; j++) {
-      Logger.log('Fetching... (Try: %s)', j.toString());
+      console.info('Fetching (Try: %s) for %s', j.toString(), uri);
       response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
 
       if (response) {
         code = response.getResponseCode().toString();
-        Logger.log('Fetched with status code: %s', code);
+        console.info('Fetched with status code: %s', code);
 
         if (code === '200') {
           break;
         }
       }
       else {
-        Logger.log('Fetch failed with empty response');
+        console.warn('Fetch failed with empty response');
       }
 
       if (j >= retry) {
         break;
       }
 
-      Logger.log('Waiting for retry...');
+      console.log('Waiting for retry...');
       Utilities.sleep(3*1000);
     }
 
@@ -55,7 +55,7 @@ function check_update() {
     value[i][COL.LASTCHK] = new Date();
 
     if (!response) {
-      Logger.log('Error: Empty response');
+      console.error('Empty response from %s', uri);
       value[i][COL.STATUS] = STATUS.ERROR;
       continue;
     }
@@ -80,14 +80,14 @@ function check_update() {
 
 
     if (value[i][COL.HEAD_ONLY] && lastmod) {
-      Logger.log('Check by HTTP Header (Last-Modified)');
+      console.log('Check by HTTP Header (Last-Modified)');
       if (!prev[COL.LASTMOD] || (prev[COL.LASTMOD].getTime() !== lastmod.getTime())) {
         value[i][COL.STATUS] = STATUS.UP;
       }
       continue; // Skip check by content
     }
 
-    Logger.log('Check by content');
+    console.log('Check by content');
     if (prev[COL.HASH] !== hash) {
       value[i][COL.STATUS] = STATUS.UP;
     }
@@ -95,5 +95,5 @@ function check_update() {
 
   range.setValues(value);
 
-  Logger.log('Finish check_update');
+  console.log('Finish check_update()');
 };
