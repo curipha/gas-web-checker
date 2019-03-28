@@ -29,18 +29,24 @@ function check_update() {
     var code = '';
     for (var j = 1;; j++) {
       console.info('Fetching (Try: %s) for %s', j.toString(), uri);
-      response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
 
-      if (response) {
-        code = response.getResponseCode().toString();
-        console.info('Fetched with status code: %s', code);
+      try {
+        response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
 
-        if (code === '200') {
-          break;
+        if (response) {
+          code = response.getResponseCode().toString();
+          console.info('Fetched with status code: %s', code);
+
+          if (code === '200') {
+            break;
+          }
+        }
+        else {
+          console.warn('Fetch failed with empty response');
         }
       }
-      else {
-        console.warn('Fetch failed with empty response');
+      catch (e) {
+        console.warn(e.message)
       }
 
       if (j >= retry) {
