@@ -10,7 +10,7 @@ function check_update() {
   for (var i = 1; i < value.length; i++) {
     var uri = value[i][COL.URICHK] || value[i][COL.URI];
 
-    console.log('>> Row %s : %s', i.toString(), uri);
+    console.log('>> %s) %s', i.toString(), uri);
 
     if (! /^https?:/.test(uri)) {
       console.warn('Not a valid URI: %s', uri);
