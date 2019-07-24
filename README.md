@@ -17,11 +17,11 @@ Usage
 
 ### Sheet format
 
-| Title               | URI                                     | URI for checking (if any)    | Category  | HEAD | Status | Last modified | Response | Last checked | Hash |
-|---------------------|-----------------------------------------|------------------------------|-----------|------|--------|---------------|----------|--------------|------|
-| GitHub Blog         | https://github.com/blog                 | https://github.com/blog.atom | Blog      |      |        |               |          |              |      |
-| A page of Wikipedia | https://en.wikipedia.org/wiki/Wikipedia |                              | Wikipedia | X    |        |               |          |              |      |
-| ...                 | ...                                     | ...                          | ...       | ...  |        |               |          |              |      |
+| Title               | URI                                     | URI for checking (if any)    | Category  | HEAD | Start content | End content | Status | Last modified | Response | Last checked | Hash |
+|---------------------|-----------------------------------------|------------------------------|-----------|------|---------------|-------------|--------|---------------|----------|--------------|------|
+| GitHub Blog         | https://github.com/blog                 | https://github.com/blog.atom | Blog      |      |               |             |        |               |          |              |      |
+| A page of Wikipedia | https://en.wikipedia.org/wiki/Wikipedia |                              | Wikipedia | X    |               |             |        |               |          |              |      |
+| ...                 | ...                                     | ...                          | ...       | ...  |               |             |        |               |          |              |      |
 
 The first row must always contain headers.
 
@@ -39,6 +39,9 @@ If the cell on **"HEAD"** column is empty, this tool compares the whole contents
 It sometimes interacts badly for dynamic pages (e.g. loading an advertisement tag, filling an actual server name into comment tag).
 
 Instead of full content comparison, it can only check `Last-Modified` header value if the cell on "HEAD" column is `X`, or not blank.
+
+If the cells on **"Start Content"** and/or **"End content"** is set, this tool compares content from/to these strings.
+It is useful for the dynamic pages which does not send `Last-Modified` header.
 
 Cells on **"Status"**, **"Last modified"**, **"Response"**, **"Last checked"** and **"Hash"** columns are automatically filled by the utility.
 Once you run this utility, all cells on these columns will be filled.

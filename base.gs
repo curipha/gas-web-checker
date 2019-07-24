@@ -5,18 +5,20 @@ var STATUS = {
 };
 
 var COL = {
-  TITLE:     0, // Title of the site
-  URI:       1, // URI
-  URICHK:    2, // URI to be check (if any)
-  CATEGORY:  3, // Category
-  HEAD_ONLY: 4, // Skip the check by content hash
+  TITLE:      0, // Title of the site
+  URI:        1, // URI
+  URICHK:     2, // URI to be check (if any)
+  CATEGORY:   3, // Category
+  HEAD_ONLY:  4, // Skip the check by content hash
+  BODY_START: 5, // Content area starts with this string
+  BODY_END:   6, // Content area ends with this string
 
-  STATUS:    5, // Status
-  LASTMOD:   6, // Last modified
-  RESPONSE:  7, // Response code
-  LASTCHK:   8, // Last checked
+  STATUS:     7, // Status
+  LASTMOD:    8, // Last modified
+  RESPONSE:   9, // Response code
+  LASTCHK:   10, // Last checked
 
-  HASH:      9  // Last hash for page content
+  HASH:      11  // Last hash for page content
 };
 
 

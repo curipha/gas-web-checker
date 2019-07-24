@@ -81,7 +81,50 @@ function check_update() {
       value[i][COL.LASTMOD] = lastmod;
     }
 
-    var hash = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, response.getContentText()));
+
+    var html = response.getContentText();
+
+    if (value[i][COL.BODY_START] || value[i][COL.BODY_END]) {
+      // Enable this logic if and only if these columns are set.
+      // HTML source code will be manipulated in this logic, but there is no guarantee that the source text is
+      // encoded correctly, i.e. there is a possibility that it attempts to parse a garbled (mojibake) text.
+      // It has a check logic that the specified keyword is in the original source code. If the text is garbled,
+      // it is very likely that it will raise an error.
+      // Thanks to this logic, a user can find the failure due to the text encoding.
+
+      var poshead = html.toLowerCase().indexOf('</head>');
+      if (poshead > 0) {
+        html = html.substring(poshead); // '</head>' tag will be removed in next replace
+      }
+      html = html
+        .replace(/[\n\r]/g, ' ') // Remove newline (Google Apps Script does not accept 's' flag in RegExp)
+        .replace(/<(script|style)\b.*?<\/\1>/gi, '') // Remove script|style tag and its text node
+        .replace(/<.*?>/g, '')   // Remove tags
+        .replace(/\s+/g, ' ');   // Remove extra whitespaces
+
+      var posstart = 0;
+      var posend   = 0;
+      if (value[i][COL.BODY_START]) {
+        posstart = html.indexOf(value[i][COL.BODY_START]);
+        console.log('String "%s" found at index %s for starting position', value[i][COL.BODY_START], posstart.toString());
+      }
+      if (value[i][COL.BODY_END]) {
+        posend = html.indexOf(value[i][COL.BODY_END], posstart);
+        console.log('String "%s" found at index %s for ending position', value[i][COL.BODY_END], posend.toString());
+      }
+
+      if (posstart < 0 || posend < 0) {
+        console.error('Start and/or end string is specified but it is not found in HTML body', uri);
+        value[i][COL.STATUS] = STATUS.ERROR;
+        continue;
+      }
+      if (posstart > 0 || posend > 0) {
+        posstart += value[i][COL.BODY_START].length;
+        html = (posend == 0) ? html.slice(posstart) : html.slice(posstart, posend);
+      }
+    }
+
+    var hash = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, html));
     value[i][COL.HASH] = hash;
 
 
