@@ -41,7 +41,7 @@ It sometimes interacts badly for dynamic pages (e.g. loading an advertisement ta
 Instead of full content comparison, it can only check `Last-Modified` header value if the cell on "HEAD" column is `X`, or not blank.
 
 Cells on **"Status"**, **"Last modified"**, **"Response"**, **"Last checked"** and **"Hash"** columns are automatically filled by the utility.
-Once you run this utility, all cells on these columnis will be filled.
+Once you run this utility, all cells on these columns will be filled.
 Do not touch any cells on these columns.
 
 Tip
