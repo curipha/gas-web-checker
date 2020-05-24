@@ -3,13 +3,14 @@ function mail_send() {
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const value = sheet.getDataRange().getValues();
+  const tz = Session.getScriptTimeZone();
 
   let updated = '';
   let errors = '';
   for (let i = 1; i < value.length; i++) {
     switch(value[i][COL.STATUS]) {
       case STATUS.UP:
-        updated += Utilities.formatString('* %s', value[i][COL.TITLE]) + (value[i][COL.LASTMOD] ? Utilities.formatDate(value[i][COL.LASTMOD], 'JST', ' (yyyy.M.d H:mm)') : '') + "\r\n";
+        updated += Utilities.formatString('* %s', value[i][COL.TITLE]) + (value[i][COL.LASTMOD] ? Utilities.formatDate(value[i][COL.LASTMOD], tz, ' (yyyy.M.d H:mm)') : '') + "\r\n";
         updated += value[i][COL.URI] + "\r\n\r\n";
         break;
       case STATUS.ERROR:
@@ -31,7 +32,7 @@ function mail_send() {
   if (body.length > 0) {
     let mailto = Session.getActiveUser().getEmail();
     console.log('Sending mail to: %s', mailto);
-    MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s (%s)', SpreadsheetApp.getActiveSpreadsheet().getName(), Utilities.formatDate(new Date(), 'JST', 'yyyy.M.d')), body.trim());
+    MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s (%s)', SpreadsheetApp.getActiveSpreadsheet().getName(), Utilities.formatDate(new Date(), tz, 'yyyy.M.d')), body.trim());
   }
 
   console.log('Finish mail_send()');
