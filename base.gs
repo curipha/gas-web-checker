@@ -1,10 +1,10 @@
-var STATUS = {
+const STATUS = {
   ERROR: 'Error',
   UP:    'Updated',
   NOCHG: 'No change'
 };
 
-var COL = {
+const COL = {
   TITLE:      0, // Title of the site
   URI:        1, // URI
   URICHK:     2, // URI to be check (if any)

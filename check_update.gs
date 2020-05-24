@@ -1,14 +1,14 @@
-var retry = 3;
+const retry = 3;
 
 function check_update() {
   console.log('Start check_update()');
 
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var range = sheet.getDataRange();
-  var value = range.getValues();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const range = sheet.getDataRange();
+  const value = range.getValues();
 
-  for (var i = 1; i < value.length; i++) {
-    var uri = value[i][COL.URICHK] || value[i][COL.URI];
+  for (let i = 1; i < value.length; i++) {
+    let uri = value[i][COL.URICHK] || value[i][COL.URI];
 
     console.log('>> %s) %s', i.toString(), uri);
 
@@ -18,16 +18,16 @@ function check_update() {
     }
 
 
-    var prev = value[i].concat([]); // Copy object
+    let prev = value[i].concat([]); // Copy object
 
     value[i][COL.STATUS]   = STATUS.NOCHG;
     value[i][COL.LASTMOD]  = '';
     value[i][COL.RESPONSE] = 'null';
     value[i][COL.HASH]     = '';
 
-    var response = null;
-    var code = '';
-    for (var j = 1;; j++) {
+    let response = null;
+    let code = '';
+    for (let j = 1;; j++) {
       console.info('Fetching (Try: %s) for %s', j.toString(), uri);
 
       try {
@@ -75,14 +75,14 @@ function check_update() {
     }
 
 
-    var lastmod = response.getHeaders()['Last-Modified'];
+    let lastmod = response.getHeaders()['Last-Modified'];
     if (lastmod) {
       lastmod = new Date(lastmod.trim());
       value[i][COL.LASTMOD] = lastmod;
     }
 
 
-    var html = response.getContentText();
+    let html = response.getContentText();
 
     if (value[i][COL.BODY_START] || value[i][COL.BODY_END]) {
       // Enable this logic if and only if these columns are set.
@@ -92,7 +92,7 @@ function check_update() {
       // it is very likely that it will raise an error.
       // Thanks to this logic, a user can find the failure due to the text encoding.
 
-      var poshead = html.toLowerCase().indexOf('</head>');
+      let poshead = html.toLowerCase().indexOf('</head>');
       if (poshead > 0) {
         html = html.substring(poshead); // '</head>' tag will be removed in next replace
       }
@@ -102,8 +102,8 @@ function check_update() {
         .replace(/<.*?>/g, '')   // Remove tags
         .replace(/\s+/g, ' ');   // Remove extra whitespaces
 
-      var posstart = 0;
-      var posend   = 0;
+      let posstart = 0;
+      let posend   = 0;
       if (value[i][COL.BODY_START]) {
         posstart = html.indexOf(value[i][COL.BODY_START]);
         console.log('String "%s" found at index %s for starting position', value[i][COL.BODY_START], posstart.toString());
@@ -124,7 +124,7 @@ function check_update() {
       }
     }
 
-    var hash = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, html));
+    let hash = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, html));
     value[i][COL.HASH] = hash;
 
 

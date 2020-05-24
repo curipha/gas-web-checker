@@ -1,12 +1,12 @@
 function mail_send() {
   console.log('Start mail_send()');
 
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var value = sheet.getDataRange().getValues();
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const value = sheet.getDataRange().getValues();
 
-  var updated = '';
-  var errors = '';
-  for (var i = 1; i < value.length; i++) {
+  let updated = '';
+  let errors = '';
+  for (let i = 1; i < value.length; i++) {
     switch(value[i][COL.STATUS]) {
       case STATUS.UP:
         updated += Utilities.formatString('* %s', value[i][COL.TITLE]) + (value[i][COL.LASTMOD] ? Utilities.formatDate(value[i][COL.LASTMOD], 'JST', ' (yyyy.M.d H:mm)') : '') + "\r\n";
@@ -20,7 +20,7 @@ function mail_send() {
   }
 
 
-  var body = '';
+  let body = '';
   if (updated.length > 0) {
     body += "<< Updated >>\r\n\r\n" + updated;
   }
@@ -29,7 +29,7 @@ function mail_send() {
   }
 
   if (body.length > 0) {
-    var mailto = Session.getActiveUser().getEmail();
+    let mailto = Session.getActiveUser().getEmail();
     console.log('Sending mail to: %s', mailto);
     MailApp.sendEmail(mailto, Utilities.formatString('Notification: %s (%s)', SpreadsheetApp.getActiveSpreadsheet().getName(), Utilities.formatDate(new Date(), 'JST', 'yyyy.M.d')), body.trim());
   }
