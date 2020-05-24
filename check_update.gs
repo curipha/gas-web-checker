@@ -10,7 +10,7 @@ function check_update() {
   for (let i = 1; i < value.length; i++) {
     let uri = value[i][COL.URICHK] || value[i][COL.URI];
 
-    console.log('>> %s) %s', i.toString(), uri);
+    console.log('>> %s) %s', i.toString(), value[i][COL.TITLE]);
 
     if (! /^https?:/.test(uri)) {
       console.warn('Not a valid URI: %s', uri);
@@ -121,6 +121,8 @@ function check_update() {
       if (posstart > 0 || posend > 0) {
         posstart += value[i][COL.BODY_START].length;
         html = (posend == 0) ? html.slice(posstart) : html.slice(posstart, posend);
+
+        console.log(html);
       }
     }
 
