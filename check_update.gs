@@ -96,11 +96,11 @@ function check_update() {
       if (poshead > 0) {
         html = html.substring(poshead); // '</head>' tag will be removed in next replace
       }
+
+      // All contents will be replaced to " " (whitespace) to avoid merging adjacent words
       html = html
-        .replace(/[\n\r]/g, ' ') // Remove newline (Google Apps Script does not accept 's' flag in RegExp)
-        .replace(/<(script|style)\b.*?<\/\1>/gi, '') // Remove script|style tag and its text node
-        .replace(/<.*?>/g, '')   // Remove tags
-        .replace(/\s+/g, ' ');   // Remove extra whitespaces
+        .replace(/<(script|style)\b.*?<\/\1>/gi, ' ') // Remove script|style tag and its text node
+        .replace(/<.*?>/g, ' ');  // Remove tags
 
       let posstart = 0;
       let posend   = 0;
@@ -121,6 +121,7 @@ function check_update() {
       if (posstart > 0 || posend > 0) {
         posstart += value[i][COL.BODY_START].length;
         html = (posend === 0) ? html.slice(posstart) : html.slice(posstart, posend);
+        html = html.replace(/\s+/g, ''); // Remove all whitespaces for canonicalization
 
         console.log(html);
       }
