@@ -58,4 +58,4 @@ function mail_send() {
   }
 
   console.log('Finish mail_send()');
-};
+}

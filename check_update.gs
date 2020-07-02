@@ -46,7 +46,7 @@ function check_update() {
         }
       }
       catch (e) {
-        console.warn(e.message)
+        console.warn(e.message);
       }
 
       if (j >= retry) {
@@ -120,7 +120,7 @@ function check_update() {
       }
       if (posstart > 0 || posend > 0) {
         posstart += value[i][COL.BODY_START].length;
-        html = (posend == 0) ? html.slice(posstart) : html.slice(posstart, posend);
+        html = (posend === 0) ? html.slice(posstart) : html.slice(posstart, posend);
 
         console.log(html);
       }
@@ -147,4 +147,4 @@ function check_update() {
   range.setValues(value);
 
   console.log('Finish check_update()');
-};
+}
