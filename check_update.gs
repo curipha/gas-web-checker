@@ -134,14 +134,16 @@ function check_update() {
     if (value[i][COL.HEAD_ONLY] && lastmod) {
       console.log('Check by HTTP Header (Last-Modified)');
       if (!prev[COL.LASTMOD] || (prev[COL.LASTMOD].getTime() !== lastmod.getTime())) {
-        value[i][COL.STATUS] = STATUS.UP;
+        value[i][COL.STATUS]  = STATUS.UP;
+        value[i][COL.LASTUPD] = lastmod;
       }
       continue; // Skip check by content
     }
 
     console.log('Check by content');
     if (prev[COL.HASH] !== hash) {
-      value[i][COL.STATUS] = STATUS.UP;
+      value[i][COL.STATUS]  = STATUS.UP;
+      value[i][COL.LASTUPD] = value[i][COL.LASTCHK];
     }
   }
 

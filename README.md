@@ -19,11 +19,11 @@ Usage
 
 ### Sheet format
 
-| Title               | URI                                     | URI for checking (if any)    | Category  | HEAD | Start content | End content | Status | Last modified | Response | Last checked | Hash |
-|---------------------|-----------------------------------------|------------------------------|-----------|------|---------------|-------------|--------|---------------|----------|--------------|------|
-| GitHub Blog         | https://github.com/blog                 | https://github.com/blog.atom | Blog      |      |               |             |        |               |          |              |      |
-| A page of Wikipedia | https://en.wikipedia.org/wiki/Wikipedia |                              | Wikipedia | X    |               |             |        |               |          |              |      |
-| ...                 | ...                                     | ...                          | ...       | ...  |               |             |        |               |          |              |      |
+| Title               | URI                                     | URI for checking (if any)    | Category  | HEAD | Start content | End content | Status | Last updated | Response | Last modified | Last checked | Hash |
+|---------------------|-----------------------------------------|------------------------------|-----------|------|---------------|-------------|--------|--------------|----------|---------------|--------------|------|
+| GitHub Blog         | https://github.com/blog                 | https://github.com/blog.atom | Blog      |      |               |             |        |              |          |               |              |      |
+| A page of Wikipedia | https://en.wikipedia.org/wiki/Wikipedia |                              | Wikipedia | X    |               |             |        |              |          |               |              |      |
+| ...                 | ...                                     | ...                          | ...       | ...  |               |             |        |              |          |               |              |      |
 
 The first row must always be a header.
 
@@ -45,9 +45,13 @@ Instead of full content comparison, it can only check `Last-Modified` header val
 If the cells on **"Start Content"** and/or **"End content"** column are set, this tool compares content from/to these strings.
 It is useful for the dynamic pages which does not send `Last-Modified` header.
 
-Cells on **"Status"**, **"Last modified"**, **"Response"**, **"Last checked"** and **"Hash"** columns are automatically filled by the utility.
+Cells on **"Status"**, **"Last updated"**, **"Last modified"**, **"Response"**, **"Last checked"** and **"Hash"** columns are automatically filled by the utility.
 Once you run this utility, all cells on these columns will be filled.
 Do not touch any cells on these columns.
+
+"Last updated" column shows the date on which the page is updated.
+"Last modified" column shows the date of `Last-modified` header (if any).
+"Last checked" column shows the date on which the page is checked for update.
 
 Tip
 ------------

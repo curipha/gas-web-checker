@@ -14,11 +14,12 @@ const COL = {
   BODY_END:   6, // Content area ends with this string
 
   STATUS:     7, // Status
-  LASTMOD:    8, // Last modified
+  LASTUPD:    8, // Last updated timestamp
   RESPONSE:   9, // Response code
-  LASTCHK:   10, // Last checked
+  LASTMOD:   10, // Last-modified header value (if any)
+  LASTCHK:   11, // Last checked timestamp
 
-  HASH:      11  // Last hash for page content
+  HASH:      12  // Last hash for page content
 };
 
 
