@@ -85,16 +85,15 @@ function check_update() {
     let html = response.getContentText();
 
     if (value[i][COL.BODY_START] || value[i][COL.BODY_END]) {
-      // Enable this logic if and only if these columns are set.
+      // Enable this logic if and only if BODY_START and BODY_END columns are set.
       // HTML source code will be manipulated in this logic, but there is no guarantee that the source text is
-      // encoded correctly, i.e. there is a possibility that it attempts to parse a garbled (mojibake) text.
-      // It has a check logic that the specified keyword is in the original source code. If the text is garbled,
-      // it is very likely that it will raise an error.
-      // Thanks to this logic, a user can find the failure due to the text encoding.
+      // encoded correctly, i.e. there is a possibility to parse a garbled (mojibake) text.
+      // However it has a check logic that the specified keyword is written in the original source code.
+      // It will raise an error if the text is garbled, and user can find the failure due to the text encoding.
 
       let poshead = html.toLowerCase().indexOf('</head>');
       if (poshead > 0) {
-        html = html.substring(poshead); // '</head>' tag will be removed in next replace
+        html = html.substring(poshead); // '</head>' tag will be removed in next replace logic
       }
 
       // All contents will be replaced to " " (whitespace) to avoid merging adjacent words

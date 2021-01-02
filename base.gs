@@ -7,7 +7,7 @@ const STATUS = {
 const COL = {
   TITLE:      0, // Title of the site
   URI:        1, // URI
-  URICHK:     2, // URI to be check (if any)
+  URICHK:     2, // URI to be checked (if any)
   CATEGORY:   3, // Category
   HEAD_ONLY:  4, // Skip the check by content hash
   BODY_START: 5, // Content area starts with this string
