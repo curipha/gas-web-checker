@@ -12,7 +12,7 @@ function check_update() {
 
     console.log('>> %s) %s', i.toString(), value[i][COL.TITLE]);
 
-    if (! /^https?:/.test(uri)) {
+    if (!/^https?:/.test(uri)) {
       console.warn('Not a valid URI: %s', uri);
       continue;
     }
