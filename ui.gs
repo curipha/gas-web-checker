@@ -5,4 +5,4 @@ function onOpen() {
     .addItem('Check sites now', 'check_update')
     .addItem('Send mail now', 'mail_send')
     .addToUi();
-};
+}
