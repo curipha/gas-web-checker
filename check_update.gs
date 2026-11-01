@@ -110,7 +110,9 @@ function check_update() {
       }
 
       if (posstart < 0 || posend < 0) {
-        console.error('Start and/or end string is specified but it is not found in HTML body', uri);
+        console.error('Start and/or end string is specified but it is not found in HTML body: %s', uri);
+        console.log(html);
+
         value[i][COL.STATUS] = STATUS.ERROR;
         continue;
       }
