@@ -95,8 +95,8 @@ function check_update() {
 
       // All contents will be replaced to " " (whitespace) to avoid merging adjacent words
       html = html
-        .replace(/<(script|style)\b.*?<\/\1>/gi, ' ') // Remove script|style tag and its text node
-        .replace(/<.*?>/g, ' ');  // Remove tags
+        .replace(/<(script|style)\b.*?<\/\1>/gis, ' ') // Remove script|style tag and its text node
+        .replace(/<.*?>/gs, ' ');  // Remove tags
 
       let posstart = 0;
       let posend   = 0;
