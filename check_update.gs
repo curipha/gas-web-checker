@@ -66,7 +66,6 @@ function check_update() {
       continue;
     }
 
-
     value[i][COL.RESPONSE] = code;
 
     if (code !== '200') {
@@ -74,13 +73,11 @@ function check_update() {
       continue;
     }
 
-
     let lastmod = response.getHeaders()['Last-Modified'];
     if (lastmod) {
       lastmod = new Date(lastmod.trim());
       value[i][COL.LASTMOD] = lastmod;
     }
-
 
     let html = response.getContentText();
 
@@ -128,7 +125,6 @@ function check_update() {
 
     let hash = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, html));
     value[i][COL.HASH] = hash;
-
 
     if (value[i][COL.HEAD_ONLY] && lastmod) {
       console.log('Check by HTTP Header (Last-Modified)');
