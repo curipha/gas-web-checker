@@ -10,7 +10,7 @@ function check_update() {
   for (let i = 1; i < value.length; i++) {
     let uri = value[i][COL.URICHK] || value[i][COL.URI];
 
-    console.log('>> %s) %s', i.toString(), value[i][COL.TITLE]);
+    console.log('>> %d) %s', i, value[i][COL.TITLE]);
 
     if (!/^https?:/.test(uri)) {
       console.warn('Not a valid URI: %s', uri);
@@ -28,7 +28,7 @@ function check_update() {
     let response = null;
     let code = '';
     for (let j = 1;; j++) {
-      console.info('Fetching (Try: %s) for %s', j.toString(), uri);
+      console.info('Fetching (Try: %d) for %s', j, uri);
 
       try {
         response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
@@ -105,11 +105,11 @@ function check_update() {
       let posend   = 0;
       if (value[i][COL.BODY_START]) {
         posstart = html.indexOf(value[i][COL.BODY_START]);
-        console.log('String "%s" found at index %s for starting position', value[i][COL.BODY_START], posstart.toString());
+        console.log('String "%s" found at index %d for starting position', value[i][COL.BODY_START], posstart);
       }
       if (value[i][COL.BODY_END]) {
         posend = html.indexOf(value[i][COL.BODY_END], posstart);
-        console.log('String "%s" found at index %s for ending position', value[i][COL.BODY_END], posend.toString());
+        console.log('String "%s" found at index %d for ending position', value[i][COL.BODY_END], posend);
       }
 
       if (posstart < 0 || posend < 0) {
