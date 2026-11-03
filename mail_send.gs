@@ -1,5 +1,5 @@
 function mail_send() {
-  console.log('Start mail_send()');
+  console.info('Start mail_send()');
 
   const nl = "\r\n";
 
@@ -33,7 +33,6 @@ function mail_send() {
     }
   }
 
-
   let body = [];
   if (updated.length > 0) {
     body = [...body, '<< Updated >>', ...updated];
@@ -44,7 +43,7 @@ function mail_send() {
 
   if (body.length > 0) {
     let mailto = Session.getActiveUser().getEmail();
-    console.log('Sending a mail to: %s', mailto);
+    console.info('Sending a mail to: %s', mailto);
 
     MailApp.sendEmail(
       mailto,
@@ -57,5 +56,5 @@ function mail_send() {
     );
   }
 
-  console.log('Finish mail_send()');
+  console.info('Finish mail_send()');
 }

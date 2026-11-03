@@ -20,7 +20,7 @@ function fetch_all_with_retry_(targets) {
       console.warn('fetchAll failed and fallback to fetch(): %s', e.message);
       results = requests.map(r => {
         try {
-          console.info('fetch(): %s', r.url);
+          console.log('fetch(): %s', r.url);
           return UrlFetchApp.fetch(r.url, r);
         }
         catch (e2) {
@@ -36,7 +36,7 @@ function fetch_all_with_retry_(targets) {
       responses[t.i] = res;
 
       if (res) {
-        console.info('Fetched with status code %s: %s', res.getResponseCode(), t.uri);
+        console.log('Fetched with status code %s: %s', res.getResponseCode(), t.uri);
         if (res.getResponseCode() === 200) return;
       }
       else {
@@ -56,7 +56,7 @@ function fetch_all_with_retry_(targets) {
 }
 
 function check_update() {
-  console.log('Start check_update()');
+  console.info('Start check_update()');
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const range = sheet.getDataRange();
@@ -176,5 +176,5 @@ function check_update() {
 
   range.setValues(value);
 
-  console.log('Finish check_update()');
+  console.info('Finish check_update()');
 }
