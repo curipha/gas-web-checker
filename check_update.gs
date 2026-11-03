@@ -21,9 +21,7 @@ function check_update() {
     let prev = value[i].concat([]); // Copy object
 
     value[i][COL.STATUS]   = STATUS.NOCHG;
-    value[i][COL.LASTMOD]  = '';
     value[i][COL.RESPONSE] = 'null';
-    value[i][COL.HASH]     = '';
 
     let response = null;
     let code = '';
