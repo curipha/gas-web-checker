@@ -1,4 +1,59 @@
 const retry = 3;
+const timeout = 6;
+
+// Trailing underscore makes this function private in Apps Script
+function fetch_all_with_retry_(targets) {
+  // targets: [{ i, uri }]  -> responses: { [i]: HTTPResponse|null }
+  const responses = {};
+  let pending = targets;
+
+  for (let j = 1; pending.length > 0; j++) {
+    console.info('Fetching (Try: %d) for %d URL(s)', j, pending.length);
+
+    const requests = pending.map(t => ({ url: t.uri, muteHttpExceptions: true, timeoutSeconds: timeout }));
+    let results;
+    try {
+      results = UrlFetchApp.fetchAll(requests);
+    }
+    catch (e) {
+      // fetchAll throws for the whole batch if any single request is invalid
+      console.warn('fetchAll failed and fallback to fetch(): %s', e.message);
+      results = requests.map(r => {
+        try {
+          console.info('fetch(): %s', r.url);
+          return UrlFetchApp.fetch(r.url, r);
+        }
+        catch (e2) {
+          console.warn('%s: %s', r.url, e2.message);
+          return null;
+        }
+      });
+    }
+
+    const failed = [];
+    pending.forEach((t, k) => {
+      const res = results[k];
+      responses[t.i] = res;
+
+      if (res) {
+        console.info('Fetched with status code %s: %s', res.getResponseCode(), t.uri);
+        if (res.getResponseCode() === 200) return;
+      }
+      else {
+        console.warn('Fetch failed with empty response: %s', t.uri);
+      }
+      failed.push(t);
+    });
+
+    if (failed.length === 0 || j >= retry) break;
+
+    console.log('Waiting for retry...');
+    Utilities.sleep(3*1000);
+    pending = failed;
+  }
+
+  return responses;
+}
 
 function check_update() {
   console.log('Start check_update()');
@@ -7,56 +62,32 @@ function check_update() {
   const range = sheet.getDataRange();
   const value = range.getValues();
 
+  const prevs = {};
+  const targets = [];
+
   for (let i = 1; i < value.length; i++) {
-    let uri = value[i][COL.URICHK] || value[i][COL.URI];
-
-    console.log('>> %d) %s', i, value[i][COL.TITLE]);
-
+    const uri = value[i][COL.URICHK] || value[i][COL.URI];
     if (!/^https?:/.test(uri)) {
       console.warn('Invalid URI is set on line %d: %s (%s)', i, value[i][COL.TITLE], uri);
       value[i][COL.STATUS] = STATUS.ERROR;
       continue;
     }
 
-
-    let prev = value[i].concat([]); // Copy object
+    prevs[i] = value[i].concat([]); // Copy object
 
     value[i][COL.STATUS]   = STATUS.NOCHG;
     value[i][COL.RESPONSE] = 'null';
 
-    let response = null;
-    let code = '';
-    for (let j = 1;; j++) {
-      console.info('Fetching (Try: %d) for %s', j, uri);
+    targets.push({ i: i, uri: uri });
+  }
 
-      try {
-        response = UrlFetchApp.fetch(uri, { muteHttpExceptions: true });
+  const responses = fetch_all_with_retry_(targets);
 
-        if (response) {
-          code = response.getResponseCode().toString();
-          console.info('Fetched with status code: %s', code);
+  for (const { i, uri } of targets) {
+    const prev = prevs[i];
+    const response = responses[i];
 
-          if (code === '200') {
-            break;
-          }
-        }
-        else {
-          console.warn('Fetch failed with empty response');
-        }
-      }
-      catch (e) {
-        console.warn(e.message);
-      }
-
-      if (j >= retry) {
-        break;
-      }
-
-      console.log('Waiting for retry...');
-      Utilities.sleep(3*1000);
-    }
-
-
+    console.log('>> %d) %s', i, value[i][COL.TITLE]);
     value[i][COL.LASTCHK] = new Date();
 
     if (!response) {
@@ -65,6 +96,7 @@ function check_update() {
       continue;
     }
 
+    const code = response.getResponseCode().toString();
     value[i][COL.RESPONSE] = code;
 
     if (code !== '200') {
@@ -79,7 +111,6 @@ function check_update() {
     }
 
     let html = response.getContentText();
-
     if (value[i][COL.BODY_START] || value[i][COL.BODY_END]) {
       // Enable this logic if and only if BODY_START and BODY_END columns are set.
       // HTML source code will be manipulated in this logic, but there is no guarantee that the source text is
@@ -124,7 +155,7 @@ function check_update() {
       }
     }
 
-    let hash = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, html));
+    const hash = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, html));
     value[i][COL.HASH] = hash;
 
     if (value[i][COL.HEAD_ONLY] && lastmod) {
