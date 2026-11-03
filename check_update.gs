@@ -17,7 +17,7 @@ function fetch_all_with_retry_(targets) {
     }
     catch (e) {
       // fetchAll throws for the whole batch if any single request is invalid
-      console.warn('fetchAll failed and fallback to fetch(): %s', e.message);
+      console.warn('fetchAll failed; falling back to fetch(): %s', e.message);
       results = requests.map(r => {
         try {
           console.log('fetch(): %s', r.url);
@@ -68,12 +68,12 @@ function check_update() {
   for (let i = 1; i < value.length; i++) {
     const uri = value[i][COL.URICHK] || value[i][COL.URI];
     if (!/^https?:/.test(uri)) {
-      console.warn('Invalid URI is set on line %d: %s (%s)', i, value[i][COL.TITLE], uri);
+      console.warn('Invalid URI on line %d: %s (%s)', i, value[i][COL.TITLE], uri);
       value[i][COL.STATUS] = STATUS.ERROR;
       continue;
     }
 
-    prevs[i] = value[i].concat([]); // Copy object
+    prevs[i] = value[i].concat([]); // Copy the row
 
     value[i][COL.STATUS]   = STATUS.NOCHG;
     value[i][COL.RESPONSE] = 'null';
@@ -114,18 +114,18 @@ function check_update() {
     if (value[i][COL.BODY_START] || value[i][COL.BODY_END]) {
       // Enable this logic if and only if BODY_START and BODY_END columns are set.
       // HTML source code will be manipulated in this logic, but there is no guarantee that the source text is
-      // encoded correctly, i.e. there is a possibility to parse a garbled (mojibake) text.
-      // However it has a check logic that the specified keyword is written in the original source code.
-      // It will raise an error if the text is garbled, and user can find the failure due to the text encoding.
+      // encoded correctly, i.e. there is a possibility of parsing garbled (mojibake) text.
+      // However, it has a check to confirm that the specified keyword is present in the original source code.
+      // It will raise an error if the text is garbled, and the user can identify the cause as text encoding.
 
       let poshead = html.toLowerCase().indexOf('</head>');
       if (poshead > 0) {
-        html = html.substring(poshead); // '</head>' tag will be removed in next replace logic
+        html = html.substring(poshead); // '</head>' tag will be removed in the next replace step
       }
 
-      // All contents will be replaced to " " (whitespace) to avoid merging adjacent words
+      // All contents will be replaced with " " (whitespace) to avoid merging adjacent words
       html = html
-        .replace(/<(script|style)\b.*?<\/\1>/gis, ' ') // Remove script|style tag and its text node
+        .replace(/<(script|style)\b.*?<\/\1>/gis, ' ') // Remove script/style tags and their contents
         .replace(/<.*?>/gs, ' ');  // Remove tags
 
       let posstart = 0;
@@ -149,7 +149,7 @@ function check_update() {
       if (posstart > 0 || posend > 0) {
         posstart += value[i][COL.BODY_START].length;
         html = (posend === 0) ? html.slice(posstart) : html.slice(posstart, posend);
-        html = html.replace(/\s+/g, ''); // Remove all whitespaces for canonicalization
+        html = html.replace(/\s+/g, ''); // Remove all whitespace for canonicalization
 
         console.log(html);
       }
@@ -176,5 +176,5 @@ function check_update() {
 
   range.setValues(value);
 
-  console.info('Finish check_update()');
+  console.info('Finished check_update()');
 }

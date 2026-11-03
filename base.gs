@@ -9,7 +9,7 @@ const COL = {
   URI:        1, // URI
   URICHK:     2, // URI to be checked (if any)
   CATEGORY:   3, // Category
-  HEAD_ONLY:  4, // Skip the check by content hash
+  HEAD_ONLY:  4, // Skip the content hash check
   BODY_START: 5, // Content area starts with this string
   BODY_END:   6, // Content area ends with this string
 
@@ -19,7 +19,7 @@ const COL = {
   LASTMOD:   10, // Last-modified header value (if any)
   LASTCHK:   11, // Last checked timestamp
 
-  HASH:      12  // Last hash for page content
+  HASH:      12  // Hash of the page content from the last check
 };
 
 

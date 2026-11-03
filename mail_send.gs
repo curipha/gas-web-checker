@@ -43,7 +43,7 @@ function mail_send() {
 
   if (body.length > 0) {
     let mailto = Session.getActiveUser().getEmail();
-    console.info('Sending a mail to: %s', mailto);
+    console.info('Sending mail to: %s', mailto);
 
     MailApp.sendEmail(
       mailto,
@@ -56,5 +56,5 @@ function mail_send() {
     );
   }
 
-  console.info('Finish mail_send()');
+  console.info('Finished mail_send()');
 }
