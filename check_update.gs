@@ -131,7 +131,7 @@ function check_update() {
       console.log('Check by HTTP Header (Last-Modified)');
       if (!prev[COL.LASTMOD] || (prev[COL.LASTMOD].getTime() !== lastmod.getTime())) {
         value[i][COL.STATUS]  = STATUS.UP;
-        value[i][COL.LASTUPD] = lastmod;
+        value[i][COL.LASTUPD] = value[i][COL.LASTCHK];
       }
       continue; // Skip check by content
     }
