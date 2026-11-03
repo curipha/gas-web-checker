@@ -13,7 +13,8 @@ function check_update() {
     console.log('>> %d) %s', i, value[i][COL.TITLE]);
 
     if (!/^https?:/.test(uri)) {
-      console.warn('Not a valid URI: %s', uri);
+      console.warn('Invalid URI is set on line %d: %s (%s)', i, value[i][COL.TITLE], uri);
+      value[i][COL.STATUS] = STATUS.ERROR;
       continue;
     }
 
